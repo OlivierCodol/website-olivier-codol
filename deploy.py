@@ -8,7 +8,7 @@ import pypandoc
 # print(result)
 
 source_dir = 'src'
-compil_dir = 'compiled'
+compil_dir = 'docs'
 template_dir = 'template'
 
 fp = open(template_dir + '/header.html', 'r')
