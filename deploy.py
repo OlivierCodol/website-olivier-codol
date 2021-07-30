@@ -4,10 +4,10 @@
 import os
 import pypandoc
 
-# result = pypandoc.convert_file('src/index.md', 'html')
+# result = pypandoc.convert_file('src-markdown/index.md', 'html')
 # print(result)
 
-source_dir = 'src'
+source_dir = 'src-markdown'
 compil_dir = 'docs'
 template_dir = 'template'
 
