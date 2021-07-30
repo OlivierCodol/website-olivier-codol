@@ -5,9 +5,6 @@ import os
 import pypandoc
 import shutil
 
-# result = pypandoc.convert_file('src-markdown/index.md', 'html')
-# print(result)
-
 script_dir = os.path.dirname(os.path.realpath(__file__))
 src_md_dir = os.path.join(script_dir, 'src-markdown')
 src_html_dir = os.path.join(script_dir, 'src-html')

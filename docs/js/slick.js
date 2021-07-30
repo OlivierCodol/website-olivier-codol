@@ -533,7 +533,7 @@
             _.options.slidesToScroll = 1;
         }
 
-        $('img[data-lazy]', _.$slider).not('[src-markdown]').addClass('slick-loading');
+        $('img[data-lazy]', _.$slider).not('[src]').addClass('slick-loading');
 
         _.setupInfinite();
 
