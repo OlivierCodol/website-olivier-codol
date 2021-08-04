@@ -54,7 +54,7 @@ for filepath in files:
     header_new = header.replace(href_flag + "css", href_flag + relative_path + "css")
     navgtn_new = navgtn.replace(href_flag, href_flag + relative_path).replace(src_flag, src_flag + relative_path)
     source_new = source.replace(href_flag, href_flag + relative_path).replace(src_flag, src_flag + relative_path)
-    footer_new = footer.replace(href_flag, href_flag + relative_path).replace(src_flag, src_flag + relative_path)
+    footer_new = footer.replace(src_flag, src_flag + relative_path)
     navgtn_new = navgtn_new.replace(navitem_old, navitem_new)
     fp.seek(0)
     page = header_new + navgtn_new + source_new + footer_new
