@@ -62,6 +62,7 @@ h2 {
 
 .container-fluid {
     max-width: 1860px;
+    padding-bottom: 50px;
 }
 
 .btn {
