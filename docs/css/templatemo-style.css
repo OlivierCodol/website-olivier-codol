@@ -34,7 +34,6 @@ body {
 a {
 	color: #9F6;
     text-decoration: none;
-    transition: all 0.3s ease;
 }
 
 a:hover {
@@ -129,6 +128,7 @@ h2 {
     font-size: 1.5rem;
     padding: 15px 45px;
     border-bottom: 1px solid white;
+    transition: all 0s ease;  /* to avoid a box-shadow effect on page loading */
 }
 
 .nav-item {
@@ -278,11 +278,9 @@ h2 {
 	position: relative;
 	float: left;
     overflow: hidden;
-    margin: 0;
     max-width: 240px;
-    margin-left: 10px;
-    margin-right: 10px;
-	height: auto;
+    margin: 0 10px;
+    height: auto;
 	background: #3085a3;
 	text-align: center;
 	cursor: pointer;
@@ -552,7 +550,7 @@ figure.effect-julia:hover p {
         position: absolute;
         top: 63px;
         right: 0;
-        background: rgb(54 75 96);
+        background: rgb(54, 75, 96);
         border-radius: 5px;
     }
 
@@ -626,7 +624,7 @@ figure.effect-julia:hover p {
     }
 }
 
-/* Preloader 
+/* Preloader
 	https://ihatetomatoes.net/create-custom-preloading-screen/
 */
 /* ==========================================================================
@@ -657,22 +655,22 @@ border-top-color: #f9c922; /* Chrome, Opera 15+, Safari 5+ */ animation: spin 1.
 
 /* Loaded */
 .loaded #loader-wrapper .loader-section.section-left {  /* Chrome, Opera 15+, Safari 3.1+ */  /* IE 9 */
-	transform: translateX(-100%);  /* Firefox 16+, IE 10+, Opera */  
+	transform: translateX(-100%);  /* Firefox 16+, IE 10+, Opera */
 	transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
 }
 
 .loaded #loader-wrapper .loader-section.section-right {  /* Chrome, Opera 15+, Safari 3.1+ */  /* IE 9 */
-	transform: translateX(100%);  /* Firefox 16+, IE 10+, Opera */  
+	transform: translateX(100%);  /* Firefox 16+, IE 10+, Opera */
 	transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
 }
 
 .loaded #loader {
-	opacity: 0;  
+	opacity: 0;
 	transition: all 0.3s ease-out;
 }
 .loaded #loader-wrapper {
 	visibility: hidden;  /* Chrome, Opera 15+, Safari 3.1+ */  /* IE 9 */
-	transform: translateY(-100%);  /* Firefox 16+, IE 10+, Opera */  
+	transform: translateY(-100%);  /* Firefox 16+, IE 10+, Opera */
 	transition: all 0.3s 1s ease-out;
 }
 /* JavaScript Turned Off */

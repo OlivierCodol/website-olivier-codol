@@ -23,20 +23,27 @@ fp = open(template_dir + '/footer.html', 'r')
 footer = fp.read()
 fp.close()
 
-for file in os.listdir(src_html_dir):
-    source_file = src_html_dir + '/' + file
-    compil_file = compil_dir + '/' + file  # .replace('.md', '.html')
-    if compil_file[-18:] == "index-content.html":
-        compil_file = compil_file[:-18] + "index.html"
 
+
+for file in os.listdir(src_html_dir):
+    source_file = src_html_dir + "/" + file
+    if file == "index-content.html":
+        file = "index.html"
+    compil_file = compil_dir + "/" + file  # .replace('.md', '.html')
+    navitem_old_pre = """li class="nav-item"><a class="nav-link" href=" """
+    navitem_old_suf = """ " data-no="1">"""
+    navitem_old = navitem_old_pre[:-1] + file + navitem_old_suf[1:]
+    navitem_new_pre = """li class="nav-item selected"><a class="nav-link" href=" """
+    navitem_new = navitem_new_pre[:-1] + file + navitem_old_suf[1:]
     # pypandoc.convert_file(source_file, 'html', outputfile=compil_file)
     shutil.copy(source_file, compil_file)
     print(source_file + ' -> ' + compil_file)
 
+    yn = navigation.find(navitem_old)
+    navigation_new = navigation.replace(navitem_old, navitem_new)
     fp = open(compil_file, 'r+')
     source = fp.read()
     fp.seek(0)
-    page = header + navigation + source + footer
+    page = header + navigation_new + source + footer
     fp.write(page)
     fp.close()
-
