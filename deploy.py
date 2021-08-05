@@ -15,8 +15,7 @@ def readfile(filename):
 
 # get directory paths
 script_dir = os.path.dirname(os.path.realpath(__file__))
-src_md_dir = os.path.join(script_dir, 'src-markdown')
-src_html_dir = os.path.join(script_dir, 'src')
+src_dir = os.path.join(script_dir, 'src')
 compil_dir = os.path.join(script_dir, 'docs')
 template_dir = os.path.join(script_dir, 'template')
 
@@ -27,15 +26,44 @@ footer = readfile(template_dir + '/footer.html')
 blog_header = readfile(template_dir + '/blogpost-header.html')
 blog_footer = readfile(template_dir + '/blogpost-footer.html')
 
+
+files = [os.path.join(dp, f) for dp, dn, fn in os.walk(os.path.expanduser(src_dir + "\\blogposts")) for f in fn]
+ix = len(src_dir) + 1
+
+bloglist = readfile(template_dir + '/bloglist-header.html')
+bloglist_entry = readfile(template_dir + '/bloglist-entry.html')
+
+for source_file in files:
+    # find post title
+    blog_content = readfile(source_file)
+    first_line = blog_content[:blog_content.find("\n")]
+    title = first_line.replace("# ", "").replace("#", "")
+
+    # add path
+    rel_path = source_file[ix:].replace(".md", ".html")
+    bloglist_entry_new = bloglist_entry.replace("insert-path-here", rel_path).replace("insert-title-here", title)
+
+    # create entry
+    bloglist = bloglist + bloglist_entry_new
+
+# add footer
+bloglist = bloglist + readfile(template_dir + '/bloglist-footer.html')
+
+# write final page
+fp = open(src_dir + "\\blog.html", 'r+')
+fp.seek(0)
+fp.write(bloglist)
+fp.close()
+
+
 # get list of files to compile
-files = [os.path.join(dp, f) for dp, dn, fn in os.walk(os.path.expanduser(src_html_dir)) for f in fn]
-ix = len(src_html_dir) + 1
+files = [os.path.join(dp, f) for dp, dn, fn in os.walk(os.path.expanduser(src_dir)) for f in fn]
+ix = len(src_dir) + 1
 
 
-for filepath in files:
+for source_file in files:
 
-    file = filepath[ix:]
-    source_file = os.path.join(src_html_dir, file)
+    file = source_file[ix:]
     if file == "index-content.html":
         file = "index.html"
     compil_file = os.path.join(compil_dir, file)
@@ -62,7 +90,7 @@ for filepath in files:
     source = fp.read()
 
     # this rewrites href and src paths for files in subdirectories
-    relative_path = "../" * file[:file.rfind("\\") + 1].count("\\")
+    relative_path = "../" * file.count("\\")
     href_flag = """href=" """[:-1]
     src_flag = """src=" """[:-1]
     header_new = header.replace(href_flag + "css", href_flag + relative_path + "css")
