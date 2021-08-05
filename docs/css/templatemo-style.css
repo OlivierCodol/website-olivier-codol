@@ -33,7 +33,7 @@ body {
 
 a {
 	color: #9F6;
-    text-decoration: none;
+    /* text-decoration: none; */
 }
 
 a:hover {
@@ -156,13 +156,13 @@ h2 {
     padding-top: 48px;
 }
 
-.navbar .navbar-nav .nav-item.selected .nav-link,
+/* .navbar .navbar-nav .nav-item.selected .nav-link, */
 .navbar .navbar-nav .nav-item .nav-link:hover {
     color: #99FF66;
     border-bottom: 1px solid #99FF66;
 }
 
-.cd-slider-nav li.selected a+.circle,
+/* .cd-slider-nav li.selected a+.circle,*/
 .navbar .navbar-nav .nav-item .nav-link:hover+.circle {
     background-color: #99FF66;
 }

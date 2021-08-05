@@ -5,23 +5,25 @@ import os
 import pypandoc
 import shutil
 
+
+def readfile(filename):
+    fp = open(filename, 'r')
+    content = fp.read()
+    fp.close()
+    return content
+
+
 script_dir = os.path.dirname(os.path.realpath(__file__))
 src_md_dir = os.path.join(script_dir, 'src-markdown')
 src_html_dir = os.path.join(script_dir, 'src-html')
 compil_dir = os.path.join(script_dir, 'docs')
 template_dir = os.path.join(script_dir, 'template')
 
-fp = open(template_dir + '/header.html', 'r')
-header = fp.read()
-fp.close()
-
-fp = open(template_dir + '/navigation.html', 'r')
-navgtn = fp.read()
-fp.close()
-
-fp = open(template_dir + '/footer.html', 'r')
-footer = fp.read()
-fp.close()
+header = readfile(template_dir + '/header.html')
+navgtn = readfile(template_dir + '/navigation.html')
+footer = readfile(template_dir + '/footer.html')
+blog_header = readfile(template_dir + '/blogpost-header.html')
+blog_footer = readfile(template_dir + '/blogpost-footer.html')
 
 files = [os.path.join(dp, f) for dp, dn, fn in os.walk(os.path.expanduser(src_html_dir)) for f in fn]
 ix = len(src_html_dir) + 1
@@ -51,11 +53,16 @@ for filepath in files:
 
     fp = open(compil_file, 'r+')
     source = fp.read()
+
     header_new = header.replace(href_flag + "css", href_flag + relative_path + "css")
     navgtn_new = navgtn.replace(href_flag, href_flag + relative_path).replace(src_flag, src_flag + relative_path)
     source_new = source.replace(href_flag, href_flag + relative_path).replace(src_flag, src_flag + relative_path)
     footer_new = footer.replace(src_flag, src_flag + relative_path)
     navgtn_new = navgtn_new.replace(navitem_old, navitem_new)
+
+    if file[:file.find("\\")] == "blogposts":
+        source_new = blog_header + source_new + blog_footer
+
     fp.seek(0)
     page = header_new + navgtn_new + source_new + footer_new
     fp.write(page)
