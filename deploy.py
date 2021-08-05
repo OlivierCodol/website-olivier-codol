@@ -32,7 +32,7 @@ bloglist = readfile(template_dir + '/bloglist-header.html')
 bloglist_entry = readfile(template_dir + '/bloglist-entry.html')
 
 for source_file in files:
-    # find post title
+    # find post title (assumes markdown format)
     blog_content = readfile(source_file)
     first_line = blog_content[:blog_content.find("\n")]
     title = first_line.replace("# ", "").replace("#", "")

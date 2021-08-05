@@ -31,6 +31,10 @@ body {
     line-height: 1.5;
 }
 
+.ul-no-bullet {
+    list-style-type: none;
+}
+
 a {
 	color: #9F6;
     /* text-decoration: none; */
