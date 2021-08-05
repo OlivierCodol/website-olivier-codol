@@ -19,12 +19,10 @@ src_dir = os.path.join(script_dir, 'src')
 compil_dir = os.path.join(script_dir, 'docs')
 template_dir = os.path.join(script_dir, 'template')
 
-# get template (static) contents
-header = readfile(template_dir + '/header.html')
-navgtn = readfile(template_dir + '/navigation.html')
-footer = readfile(template_dir + '/footer.html')
-blog_header = readfile(template_dir + '/blogpost-header.html')
-blog_footer = readfile(template_dir + '/blogpost-footer.html')
+
+##########################
+# BLOG LIST CREATION
+##########################
 
 
 files = [os.path.join(dp, f) for dp, dn, fn in os.walk(os.path.expanduser(src_dir + "\\blogposts")) for f in fn]
@@ -54,6 +52,23 @@ fp = open(src_dir + "\\blog.html", 'r+')
 fp.seek(0)
 fp.write(bloglist)
 fp.close()
+
+##########################
+# END OF BLOG LIST CREATION
+##########################
+
+
+##########################
+# FULL WEBSITE CREATION
+##########################
+
+
+# get template (static) contents
+header = readfile(template_dir + '/header.html')
+navgtn = readfile(template_dir + '/navigation.html')
+footer = readfile(template_dir + '/footer.html')
+blog_header = readfile(template_dir + '/blogpost-header.html')
+blog_footer = readfile(template_dir + '/blogpost-footer.html')
 
 
 # get list of files to compile
@@ -108,3 +123,7 @@ for source_file in files:
     page = header_new + navgtn_new + source_new + footer_new
     fp.write(page)
     fp.close()
+
+##########################
+# ENF OF FULL WEBSITE CREATION
+##########################
