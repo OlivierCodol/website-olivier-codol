@@ -35,6 +35,18 @@ body {
     list-style-type: none;
 }
 
+.tm-link-bloglist-entry {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.tm-link-bloglist-entry:hover,
+.tm-link-bloglist-entry:focus {
+    color: #99FF66;
+}
+
+
 a {
 	color: #9F6;
     /* text-decoration: none; */
@@ -113,7 +125,12 @@ h2 {
 }
 
 .navbar-brand {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
+}
+
+.navbar-social-media-link {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .navbar {
@@ -130,7 +147,7 @@ h2 {
 }
 
 .navbar .navbar-nav .nav-item .nav-link {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     padding: 15px 45px;
     border-bottom: 1px solid white;
     transition: all 0s ease;  /* to avoid a box-shadow effect on page loading */
@@ -324,7 +341,7 @@ h2 {
 /* Anchor will cover the whole item by default */
 /* For some effects it will show as a button */
 .gallery-slider figure figcaption > a {
-	z-index: 1000;
+	z-index: 500;
 	text-indent: 200%;
 	white-space: nowrap;
 	font-size: 0;
