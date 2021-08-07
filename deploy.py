@@ -14,6 +14,7 @@ def readfile(filename):
     return content
 
 
+# find a snippet between a start landmark and an end landmark
 def find_content_snippet(content, start_snippet, end_snippet):
     start_pos = content.find(start_snippet) + len(start_snippet)
     truncated_content = content[start_pos:]
@@ -49,16 +50,18 @@ for source_file in files:
     blog_content = readfile(source_file)
     title = find_content_snippet(blog_content, """ id="blogpost-title">""", "<")
     mtime = find_content_snippet(blog_content, """Posted on """, ".")
-    ctime = find_content_snippet(blog_content, """Last modified """, ".")
-    mtime = datetime.datetime.strptime(mtime, "%A %d %B %Y")
-    ctime = datetime.datetime.strptime(ctime, "%A %d %B %Y")
+    ctime = find_content_snippet(blog_content, """Last modified on """, ".")
+    if mtime:
+        mtime = "posted on " + str(datetime.datetime.strptime(mtime, "%A %d %B %Y").date())
+    if ctime:
+        ctime = "last modified on " + str(datetime.datetime.strptime(ctime, "%A %d %B %Y").date())
     rel_path = source_file[ix:]
 
     bloglist_entry_new = copy.deepcopy(bloglist_entry)
     bloglist_entry_new = bloglist_entry_new.replace("insert-path-here", rel_path)
     bloglist_entry_new = bloglist_entry_new.replace("insert-title-here", title)
-    bloglist_entry_new = bloglist_entry_new.replace("insert-creation-date-here", str(mtime.date()))
-    bloglist_entry_new = bloglist_entry_new.replace("insert-modification-date-here", str(ctime.date()))
+    bloglist_entry_new = bloglist_entry_new.replace("posted on insert-creation-date-here", mtime)
+    bloglist_entry_new = bloglist_entry_new.replace("last modified on insert-modification-date-here", ctime)
 
     # create entry
     bloglist = bloglist + bloglist_entry_new
