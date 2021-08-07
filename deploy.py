@@ -1,16 +1,28 @@
 
 # http://localhost:63342/website-olivier-codol/docs/index.html
 import os
-import pypandoc
 import shutil
+import datetime
+import copy
 
 
 # function to get file content
 def readfile(filename):
-    fp = open(filename, 'r')
-    content = fp.read()
-    fp.close()
+    pointer = open(filename, 'r')
+    content = pointer.read()
+    pointer.close()
     return content
+
+
+def find_content_snippet(content, start_snippet, end_snippet):
+    start_pos = content.find(start_snippet) + len(start_snippet)
+    truncated_content = content[start_pos:]
+    relative_end_pos = truncated_content.find(end_snippet)
+    end_pos = relative_end_pos + start_pos
+    content_snippet = content[start_pos:end_pos]
+    if content.find(start_snippet) == -1:
+        content_snippet = ""
+    return content_snippet
 
 
 # get directory paths
@@ -32,14 +44,21 @@ bloglist = readfile(template_dir + '/bloglist-header.html')
 bloglist_entry = readfile(template_dir + '/bloglist-entry.html')
 
 for source_file in files:
-    # find post title (assumes markdown format)
-    blog_content = readfile(source_file)
-    first_line = blog_content[:blog_content.find("\n")]
-    title = first_line.replace("# ", "").replace("#", "")
 
-    # add path
-    rel_path = source_file[ix:].replace(".md", ".html")
-    bloglist_entry_new = bloglist_entry.replace("insert-path-here", rel_path).replace("insert-title-here", title)
+    # find post title, creation and modification date, and relative path
+    blog_content = readfile(source_file)
+    title = find_content_snippet(blog_content, """ id="blogpost-title">""", "<")
+    mtime = find_content_snippet(blog_content, """Posted on """, ".")
+    ctime = find_content_snippet(blog_content, """Last modified """, ".")
+    mtime = datetime.datetime.strptime(mtime, "%A %d %B %Y")
+    ctime = datetime.datetime.strptime(ctime, "%A %d %B %Y")
+    rel_path = source_file[ix:]
+
+    bloglist_entry_new = copy.deepcopy(bloglist_entry)
+    bloglist_entry_new = bloglist_entry_new.replace("insert-path-here", rel_path)
+    bloglist_entry_new = bloglist_entry_new.replace("insert-title-here", title)
+    bloglist_entry_new = bloglist_entry_new.replace("insert-creation-date-here", str(mtime.date()))
+    bloglist_entry_new = bloglist_entry_new.replace("insert-modification-date-here", str(ctime.date()))
 
     # create entry
     bloglist = bloglist + bloglist_entry_new
@@ -49,6 +68,7 @@ bloglist = bloglist + readfile(template_dir + '/bloglist-footer.html')
 
 # write final page
 fp = open(src_dir + "\\blog.html", 'r+')
+fp.truncate(0)  # erase all previous content
 fp.seek(0)
 fp.write(bloglist)
 fp.close()
@@ -84,21 +104,16 @@ for source_file in files:
     compil_file = os.path.join(compil_dir, file)
 
     # this highlights the navigation tab on the corresponding page
-    navitem_old_pre = """li class="nav-item"><a class="nav-link" href=" """
-    navitem_old_suf = """ " data-no="1">"""
-    navitem_old = navitem_old_pre[:-1] + file + navitem_old_suf[1:]
-    navitem_new_pre = """li class="nav-item selected"><a class="nav-link" href=" """
-    navitem_new = navitem_new_pre[:-1] + file + navitem_old_suf[1:]
+    navitem_old_not = """li class="nav-item not-selected"><a class="nav-link" href=" """[:-1]
+    navitem_old_pre = """li class="nav-item"><a class="nav-link" href=" """[:-1]
+    navitem_old_suf = """ " data-no="1">"""[1:]
+    navitem_old = navitem_old_pre + file + navitem_old_suf
+    navitem_new_pre = """li class="nav-item selected"><a class="nav-link" href=" """[:-1]
+    navitem_new = navitem_new_pre + file + navitem_old_suf
 
     # create subdirectories if non-existent
     os.makedirs(os.path.dirname(compil_file), exist_ok=True)
-
-    # convert markdown files if needed
-    if file[-3:] == ".md":
-        compil_file = compil_file.replace('.md', '.html')
-        pypandoc.convert_file(source_file, 'html', outputfile=compil_file)
-    else:
-        shutil.copy(source_file, compil_file)
+    shutil.copy(source_file, compil_file)
     print(source_file + ' -> ' + compil_file)
 
     fp = open(compil_file, 'r+')
@@ -108,11 +123,12 @@ for source_file in files:
     relative_path = "../" * file.count("\\")
     href_flag = """href=" """[:-1]
     src_flag = """src=" """[:-1]
+    navgtn_new = navgtn.replace(navitem_old, navitem_new)
+    navgtn_new = navgtn_new.replace(navitem_old_pre, navitem_old_not)
     header_new = header.replace(href_flag + "css", href_flag + relative_path + "css")
-    navgtn_new = navgtn.replace(href_flag, href_flag + relative_path).replace(src_flag, src_flag + relative_path)
-    source_new = source.replace(href_flag, href_flag + relative_path).replace(src_flag, src_flag + relative_path)
+    navgtn_new = navgtn_new.replace(href_flag, href_flag + relative_path).replace(src_flag, src_flag + relative_path)
+    source_new = source.replace(src_flag, src_flag + relative_path)
     footer_new = footer.replace(src_flag, src_flag + relative_path)
-    navgtn_new = navgtn_new.replace(navitem_old, navitem_new)
 
     # add blogpost header if page is a blog post
     if file[:file.find("\\")] == "blogposts":

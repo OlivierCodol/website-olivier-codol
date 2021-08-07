@@ -18,19 +18,20 @@ https://templatemo.com/tm-560-astro-motion
   @font-face {
     font-family: "Computer Modern";
     src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunsi.otf');
-    font-style: italic, oblique;
+    font-style: italic;
   }
   @font-face {
     font-family: "Computer Modern";
     src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunbxo.otf');
     font-weight: bold;
-    font-style: italic, oblique;
+    font-style: italic;
   }
 
 
 html, body, .page-container {
     height: 100%;
     background-color: rgb(45, 51, 59);
+    transition: all 0s;
     /* background-image: url(../img/tm-astro-bg.jpg);
     left: 50%;
     top: 50%;
@@ -45,7 +46,30 @@ html, body, .page-container {
     /* background-color: rgb(34, 39, 46); /* darker color */
 }
 
-.horizontalrule1 {
+.align-right {
+    text-align: end;
+}
+
+.bloglist-content-pad {
+    padding: 15px 30px;
+    margin-bottom: 15px;
+}
+
+#blogpost-date {
+    font-size: 12px;
+    font-style: italic;
+    white-space: pre-line;
+    padding-bottom: 40px;
+}
+
+.date-creation-log {
+    font-size: 12px;
+    text-align: end;
+    font-style: italic;
+    white-space: pre-line;
+}
+
+.horizontal-rule {
     position:relative;
     height: 1px;
     background: #434343;
@@ -224,13 +248,18 @@ h2 {
     padding-top: 48px;
 }
 
-/* .navbar .navbar-nav .nav-item.selected .nav-link, */
+.navbar .navbar-nav .nav-item.selected .nav-link,
 .navbar .navbar-nav .nav-item .nav-link:hover {
     color: #99FF66;
     border-bottom: 1px solid #99FF66;
 }
 
-/* .cd-slider-nav li.selected a+.circle,*/
+.navbar .navbar-nav .nav-item.not-selected .nav-link {
+    color: #ffffff;
+    border-bottom: 1px solid white;
+}
+
+.cd-slider-nav li.selected a+.circle,
 .navbar .navbar-nav .nav-item .nav-link:hover+.circle {
     background-color: #99FF66;
 }
@@ -570,6 +599,7 @@ figure.effect-julia:hover p {
 
 .map-outer{
     position:relative;
+    padding-top: 60px;
 }
 
 .gmap-canvas {
