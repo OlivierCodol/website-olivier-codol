@@ -208,7 +208,7 @@ h2 {
 
 .navbar .navbar-nav .nav-item .nav-link {
     font-size: 1.3rem;
-    padding: 15px 45px;
+    padding: 10px 20px;
     border-bottom: 1px solid white;
     transition: all 0s ease;  /* to avoid a box-shadow effect on page loading */
 }
@@ -615,13 +615,15 @@ figure.effect-julia:hover p {
 
 @media (max-width: 1200px) {
     .navbar .navbar-nav .nav-item .nav-link {
-        padding: 15px 45px;
+        padding: 10px 15px;
+        font-size: 1.2rem;
     }
 }
 
 @media (max-width: 1024px) {
     .navbar .navbar-nav .nav-item .nav-link {
-        font-size: 1.2rem;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 
@@ -632,6 +634,11 @@ figure.effect-julia:hover p {
 
     .navbar {
         position: relative;
+    }
+
+    .navbar .navbar-nav .nav-item .nav-link {
+        padding: 5px 15px;
+        font-size: 1.2rem;
     }
     
     .navbar-collapse {
