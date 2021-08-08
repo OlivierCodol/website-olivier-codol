@@ -4,7 +4,6 @@ import os
 import shutil
 import datetime
 import copy
-# TODO: put a background image
 
 
 # function to get file content
