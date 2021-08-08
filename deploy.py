@@ -126,10 +126,16 @@ for source_file in files:
     relative_path = "../" * file.count("\\")
     href_flag = """href=" """[:-1]
     src_flag = """src=" """[:-1]
+    header_new = header.replace(href_flag + "css", href_flag + relative_path + "css")
     navgtn_new = navgtn.replace(navitem_old, navitem_new)
     navgtn_new = navgtn_new.replace(navitem_old_pre, navitem_old_not)
-    header_new = header.replace(href_flag + "css", href_flag + relative_path + "css")
-    navgtn_new = navgtn_new.replace(href_flag, href_flag + relative_path).replace(src_flag, src_flag + relative_path)
+    navgtn_new = navgtn_new.replace(src_flag, src_flag + relative_path)
+    navgtn_new = navgtn_new.replace(
+        """class="nav-link" """ + href_flag,
+        """class="nav-link" """ + href_flag + relative_path)
+    navgtn_new = navgtn_new.replace(
+        """class="navbar-brand" """ + href_flag,
+        """class="navbar-brand" """ + href_flag + relative_path)
     source_new = source.replace(src_flag, src_flag + relative_path)
     footer_new = footer.replace(src_flag, src_flag + relative_path)
 
