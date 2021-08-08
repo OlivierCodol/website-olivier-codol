@@ -31,7 +31,6 @@ https://templatemo.com/tm-560-astro-motion
 html, body, .page-container {
     height: 100%;
     background-color: rgb(45, 51, 59);
-    transition: all 0s;
     /* background-image: url(../img/tm-astro-bg.jpg);
     left: 50%;
     top: 50%;
@@ -666,6 +665,10 @@ figure.effect-julia:hover p {
     .cd-hero-slider {
         padding: 10px 0;
     }
+
+    .navbar-brand {
+        font-size: 1.7rem;
+    }
 }
 
 @media (max-width: 834px) {
@@ -691,6 +694,11 @@ figure.effect-julia:hover p {
 }
 
 @media (max-width: 600px) {
+
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+
     .intro-left,
     .intro-right {
         width: 100%;
