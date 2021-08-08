@@ -5,7 +5,7 @@ import shutil
 import datetime
 import copy
 # TODO: put a background image
-# TODO: change the font style of bloglist entries
+
 
 # function to get file content
 def readfile(filename):
