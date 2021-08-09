@@ -144,6 +144,7 @@ for source_file in files:
         source_new = blog_header + source_new + blog_footer
 
     # write final page
+    fp.truncate(0)  # erase all previous content
     fp.seek(0)
     page = header_new + navgtn_new + source_new + footer_new
     fp.write(page)

@@ -98,6 +98,11 @@ a {
     /* text-decoration: none; */
 }
 
+.a-no-underline {
+	color: #9F6;
+    text-decoration: none;
+}
+
 a:hover {
 	color: #3CF;
 }
@@ -649,8 +654,16 @@ figure.effect-julia:hover p {
         border-radius: 5px;
     }
 
+    .navbar .navbar-nav {
+        margin-top: 15px;
+    }
+
     .navbar .navbar-nav .nav-item {
         margin-bottom: 20px;
+    }
+
+    .navbar .navbar-nav .nav-item:last-child {
+        margin-bottom: 5px;
     }
 
     .page-left,
