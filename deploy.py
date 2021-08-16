@@ -43,6 +43,7 @@ ix = len(src_dir) + 1
 
 bloglist = readfile(template_dir + '/bloglist-header.html')
 bloglist_entry = readfile(template_dir + '/bloglist-entry.html')
+files.reverse()  # most recent item first
 
 for source_file in files:
 
