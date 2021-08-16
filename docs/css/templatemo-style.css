@@ -75,7 +75,7 @@ body:before {
   background-size: cover;
 }
 
-.ul-no-bullet {
+.list-no-bullet {
     list-style-type: none;
 }
 
