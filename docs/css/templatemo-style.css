@@ -103,6 +103,10 @@ a {
     text-decoration: none;
 }
 
+.font-color-purple {
+    color: #8a70bd;
+}
+
 a:hover {
 	color: #3CF;
 }
@@ -302,6 +306,12 @@ h2 {
 
 .page-left {
     margin-left: 100px;
+}
+
+.page-center {
+    width: 99%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .page-right {
