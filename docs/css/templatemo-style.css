@@ -179,6 +179,8 @@ h2 {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 300;
     font-size: 19px;
+    border-bottom: 1px solid #646464;
+    margin-top: 0;
 }
 
 .navbar a {
@@ -201,11 +203,6 @@ h2 {
     padding-right: 4px;
     text-decoration: none;
 }
-
-.navbar {
-    margin-top: 0;
-}
-
 .navbar .navbar-nav .nav-item {
     margin-left: 5px;
     margin-right: 5px;
