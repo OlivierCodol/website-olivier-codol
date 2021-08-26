@@ -202,11 +202,12 @@ h2 {
     padding-bottom: 0;
 }
 
-.navbar-social-media-link {
+.image-link {
     padding-left: 4px;
     padding-right: 4px;
     text-decoration: none;
 }
+
 .navbar .navbar-nav .nav-item {
     margin-left: 5px;
     margin-right: 5px;
