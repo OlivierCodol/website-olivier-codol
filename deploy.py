@@ -137,7 +137,10 @@ for source_file in files:
     navgtn_new = navgtn_new.replace(
         """class="navbar-brand" """ + href_flag,
         """class="navbar-brand" """ + href_flag + relative_path)
-    source_new = source.replace(src_flag, src_flag + relative_path)
+    source_new = source.replace(href_flag + "http", """hr__ef="http""")  # hide http hrefs from next line's replacement
+    source_new = source_new.replace(href_flag, href_flag + relative_path)
+    source_new = source_new.replace("""hr__ef="http""", href_flag + "http")  # restore http hrefs
+    source_new = source_new.replace(src_flag, src_flag + relative_path)
     footer_new = footer.replace(src_flag, src_flag + relative_path)
 
     # add blogpost header if page is a blog post

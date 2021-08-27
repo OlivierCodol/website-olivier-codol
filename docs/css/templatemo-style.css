@@ -111,6 +111,10 @@ a {
     color: #8a70bd;
 }
 
+.font-color-white {
+    color: #ffffff;
+}
+
 a:hover {
 	color: #3CF;
 }
