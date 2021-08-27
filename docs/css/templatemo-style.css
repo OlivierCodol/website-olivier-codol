@@ -24,15 +24,15 @@ html, body, .page-container {
 
 /* to make videos responsive */
 .videoWrapper {
-  position: relative;
-  padding-bottom: 315px; /* 16:9 */
-  height: 0;
+    position: relative;
+    padding-bottom: 315px; /* 16:9 */
+    height: 0;
 }
 
 .videoWrapper iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .bloglist-content-pad {
