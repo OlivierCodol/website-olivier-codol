@@ -41,6 +41,7 @@ html, body, .page-container {
 }
 
 .bloglist-content-pad {
+    border-radius: .40rem 0.40rem 0 0;
     padding: 15px 20px;
     margin-bottom: 15px;
     max-width: 767px;
@@ -314,6 +315,7 @@ h2 {
 }
 
 .content-pad {
+    border-radius: .40rem 0.40rem 0 0;
     padding: 40px 20px;
     margin-bottom: 15px;
 }
