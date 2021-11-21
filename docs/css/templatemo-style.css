@@ -411,7 +411,7 @@ h2 {
 
 .accordion-button:hover, .accordion-button:not(.collapsed) {
     color: #fffaf4;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .accordion-button {
