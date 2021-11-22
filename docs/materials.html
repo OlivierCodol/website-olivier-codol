@@ -80,12 +80,56 @@ https://templatemo.com/tm-560-astro-motion
         </div>
       </div>
       <div class="container-fluid tm-content-container">
-        <div class="position-relative page-width-1 page-center">
-          <div class="tm-bg-dark content-pad">
-              <p><h2><a class="a-no-underline" target="_blank" href="https://books.google.ca/books?id=hGxurdEZVtkC&hl=fr&source=gbs_navlinks_s">Optimal Control Systems</a></h2></p>
-              <p><i>By D.S. Naidu</i></p>
-              <div class="d-flex position-relative intro-container">
+        <div class="text-center">
+          <p>This page indexes materials I found useful for familiarizing with new, otherwise challenging concepts. I hope they may be useful to others as well.</p>
+        </div>
+        <div class="hline text-center mb-5"></div>
+
+        <h2 class="mb-4">Computational Motor Control for Neuroscience</h2>
+        <div class="accordion">
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <div class="accordion-button collapsed accordion-button-noarrow">
                 <div>
+                  <img alt="book" src="img/logos/course.png" width="24">
+                  <a class="a-no-underline" target="_blank" href="https://gribblelab.org/teaching/compneuro2012/">Modelling the Kinematics and Dynamics of a 2-dof arm</a>
+                  <small><i>---by P. L. Gribble</i></small>
+                </div>
+              </div>
+            </h2>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <div class="accordion-button collapsed accordion-button-noarrow">
+                <div>
+                  <img alt="book" src="img/logos/course.png" width="24">
+                  <a class="a-no-underline" target="_blank" href="https://github.com/joshcash9/Neuromechanics_Course">Neuromechanics of Human Motion</a>
+                  <small><i>---by J. G. A. Cashaback</i></small>
+                </div>
+            </h2>
+          </div>
+
+        </div>
+
+        <h2 class="mb-4">Theory of Optimal Control</h2>
+        <div class="accordion">
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Optimal_Control_Systems">
+                <div><img alt="book" src="img/logos/book.png" width="24"> Optimal Control Systems</div>
+              </button>
+            </h2>
+
+            <div id="Optimal_Control_Systems" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <p><h3><a class="a-no-underline" target="_blank" href="https://books.google.ca/books?id=hGxurdEZVtkC&hl=fr&source=gbs_navlinks_s">Optimal Control Systems</a></h3></p>
+                <p><i>By D.S. Naidu</i></p>
+
+                <div class="d-flex position-relative intro-container">
+                  <div>
                     <p  class="mt-2">This textbook is a good starting point to learn about optimal control for people with less engineering experience.
                     The first asset of this book is that it shows the maths only after explaining what we are trying to do, rather than before.
                     Maths can be a bit of a scarecrow, but when we know what a formula is trying to achieve before we even get to it,
@@ -96,77 +140,132 @@ https://templatemo.com/tm-560-astro-motion
                     While this is a reasonable logic, it also misses on a great opportunity to link the now-gained intuitive understanding to its mathematical formalization, which is also a worthy skill to developp.</p>
                     <p class="mt-4 mb-4">The third asset of this book is its exercice section at the end of each chapter. They are very well crafted, reasonably progressive in difficulty, and overall
                     a great mean of playing with newly acquired concepts.</p>
-                </div>
-                <div>
+                  </div>
+
+                  <div>
                     <img class="img-fluid" style="max-width: 200px; padding-left: 20px" src="img/covers/optimal-control-systems.tif" alt="Image">
+                  </div>
                 </div>
               </div>
+            </div>
           </div>
 
-          <div class="tm-bg-dark content-pad">
-              <p><h2>Lagrange multipliers</h2></p>
-              <p class="mt-4 mb-5">This video provides an intuitive geometrical explanation of how Lagrange multipliers work for constrained optimization.</p>
-              <div class="videoWrapper">
-                  <iframe width="560"
-                          height="315"
-                          src="https://www.youtube.com/embed/8mjcnxGMwFo"
-                          title="YouTube video player" frameborder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen>
-                  </iframe>
-              </div>
-          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Optimal_Control_Estimation">
+                <div><img alt="book" src="img/logos/book.png" width="24"> Optimal Control and Estimation</div>
+              </button>
+            </h2>
 
-          <div class="tm-bg-dark content-pad">
-              <p><h2><a class="a-no-underline" target="_blank" href="https://www.google.ca/books/edition/Optimal_Control_and_Estimation/JqDDAgAAQBAJ?hl=fr&gbpv=0">Optimal Control and Estimation</a></h2></p>
-              <p><i>By R.F. Stengel</i></p>
-              <div class="d-flex position-relative intro-container">
-                <div>
+            <div id="Optimal_Control_Estimation" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <p><h3><a class="a-no-underline" target="_blank" href="https://www.google.ca/books/edition/Optimal_Control_and_Estimation/JqDDAgAAQBAJ?hl=fr&gbpv=0">Optimal Control and Estimation</a></h3></p>
+                <p><i>By R.F. Stengel</i></p>
+
+                <div class="d-flex position-relative intro-container">
+                  <div>
                     <p class="mt-2">Chapter 4 provides a well-laid explanation of Kalman filtering. It starts with a simple least-square extimator,
                     then adds propagation over time of state estimate uncertainty to yield the Kalman filter. This is then followed by an extension to the continuous-time case
                     (Kalman-Bucy filter) and non-linear case (extended Kalman-Bucy filter, Quasilinear Filter).</p>
-              </div>
-                <div>
+                  </div>
+
+                  <div>
                     <img class="img-fluid" style="max-width: 200px; padding-left: 20px" src="img/covers/optimal-control-and-estimation.jfif" alt="Image">
+                  </div>
                 </div>
               </div>
+            </div>
           </div>
 
-          <div class="tm-bg-dark content-pad">
-              <p><h2><del>Imaginary</del> Lateral numbers</h2></p>
-              <p class="mt-4 mb-5">Lateral numbers, better known as imaginary numbers, are somewhat mystifying because what they represent in real life seems difficult to grasp for the human mind.
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Lagrange_multipliers">
+                <div><img alt="book" src="img/logos/reel.png" width="24"> Lagrange multipliers</div>
+              </button>
+            </h2>
+
+            <div id="Lagrange_multipliers" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <p><h3>Lagrange Multipliers</h3></p>
+                <p class="mt-4 mb-5">This video provides an intuitive geometrical explanation of how Lagrange multipliers work for constrained optimization.</p>
+                <div class="videoWrapper">
+                  <iframe width="560" height="315"
+                        src="https://www.youtube.com/embed/8mjcnxGMwFo"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                  </iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <h2 class="mb-4">Mathematics</h2>
+        <div class="accordion">
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Lateral_Numbers">
+                <div><img alt="book" src="img/logos/reel.png" width="24"> (Imaginary) Numbers</div>
+              </button>
+            </h2>
+
+            <div id="Lateral_Numbers" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <p><h3><del>Imaginary</del> Lateral numbers</h3></p>
+                <p class="mt-4 mb-5">Lateral numbers, better known as imaginary numbers, are somewhat mystifying because what they represent in real life seems difficult to grasp for the human mind.
                   Who doesn't get a bit scared when their running code start returning <code>3 + 5i</code> seemingly out of the blue?
                   This 13-episodes (!) series breaks down what lateral numbers are, why it should be called lateral numbers rather than imaginary numbers,
                   and more importantly, why they should be no more mystifying than, say, negative numbers.
-              </p>
-              <div class="videoWrapper">
-                <iframe width="560"
+                </p>
+                <div class="videoWrapper">
+                  <iframe width="560"
                         height="315"
                         src="https://www.youtube.com/embed/T647CGsuOVU"
                         title="YouTube video player"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
-                </iframe>
+                  </iframe>
+                </div>
               </div>
+            </div>
           </div>
+        </div>
 
-          <div class="tm-bg-dark content-pad">
-              <p><h2>Support vector machines</h2></p>
-              <p class="mt-4 mb-5">This video provides a well-laid breakdown of the theoretical basis for support vector machines.</p>
-              <div class="videoWrapper">
-                <iframe width="560"
+        <h2 class="mb-4">Data Science</h2>
+        <div class="accordion">
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#SVM">
+                <div><img alt="book" src="img/logos/reel.png" width="24"> Support Vector Machines</div>
+              </button>
+            </h2>
+
+            <div id="SVM" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <p><h3>Support Vector Machines</h3></p>
+                <p class="mt-4 mb-5">This video provides a well-laid breakdown of the theoretical basis for support vector machines.</p>
+                <div class="videoWrapper">
+                  <iframe width="560"
                         height="315"
                         src="https://www.youtube.com/embed/_PwhiWxHK8o"
                         title="YouTube video player"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
-                </iframe>
+                  </iframe>
+                </div>
               </div>
+            </div>
           </div>
-
         </div>
+
 
     </div>
     <div class="container-fluid">

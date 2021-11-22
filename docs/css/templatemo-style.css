@@ -405,6 +405,12 @@ h2 {
     margin-bottom: 15px;
 }
 
+.hline {
+    border-bottom: 1px solid #646464;
+    width: 40%;
+    margin: auto;
+}
+
 .accordion {
     margin-bottom: 40px;
 }
@@ -419,6 +425,10 @@ h2 {
     color: #fffaf4;
     font-size: large;
     font-weight: bold;
+}
+
+.accordion-button-noarrow::after {
+    content: none;
 }
 
 .accordion-button:after {
