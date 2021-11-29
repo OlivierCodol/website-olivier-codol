@@ -400,8 +400,21 @@ h2 {
 }
 
 .code-block {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    border-radius: .40rem;
+    margin-bottom: 10px;
 }
+pre {
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    border-radius: .40rem;
+    color: #c9a082;
+}
+code {
+    color: #ff9f5a;
+}
+
 
 .content-pad {
     border-radius: .40rem 0.40rem 0 0;

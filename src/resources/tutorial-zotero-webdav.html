@@ -6,36 +6,76 @@
 
             <h2> 1. Setup the Raspberry Pi</h2>
             <div class="ms-4">
-            <p>I won’t go into much detail about this as there are many comprehensive tutorials out there that already cover this.</p>
+              <p>I won’t go into much detail about this as there are many comprehensive tutorials out there that already cover this.</p>
 
-            <h4>Hardware</h4>
-            <p>At first you will obviously need a screen, keyboard and mouse plugged into the Pi. Then, you can connect to your network (ethernet or wifi) and set up some remote-control software, such as VNC Viewer or SSH to control the Pi directly through a remote terminal. At this point you can essentially leave the Pi as such with just the power supply plugged, and the ethernet cable if you chose that method over wifi.</p>
+              <h4>Hardware</h4>
+              <p>At first you will obviously need a screen, keyboard and mouse plugged into the Pi. Then, you can connect to your network (ethernet or wifi) and set up some remote-control software, such as VNC Viewer or SSH to control the Pi directly through a remote terminal. At this point you can essentially leave the Pi as such with just the power supply plugged, and the ethernet cable if you chose that method over wifi.</p>
 
-            <h4>Basic Software</h4>
-
-              <ul>
-                <li>update to latest distro</li>
-                <li>username</li>
-                <li>firewall</li>
-                <li>openssl</li>
-                <li>apache2</li>
-              </ul>
-            <p>
-              Next, we will need to setup and configure Apache on the Pi, which is a software that allows creating web servers.
-            </p>
-          </div>
+              <h4>Basic Software</h4>
+              <p>Let's properly setup the Raspberry Pi OS first. This section is based on
+                <a class="a-no-underline" target="_blank" href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04">
+                this tutorial</a>, except we do not touch on setting up the SSH protocol. But feel free to look into it as well if you want to of course.
+              </p>
+              <p>Let's first update the system to its latest version. In a terminal, enter the following:</p>
+              <div class="code-block"><code>
+                sudo apt-get update<br>
+                sudo apt-get dist-upgrade<br>
+                sudo apt-get autoremove
+              </code></div>
+              <p>Next, we will setup a regular user profile, and then grant that profile superuser privileges.</p>
+              <div class="code-block"><code>
+                adduser your_user_name<br>
+                usermod -aG sudo your_user_name
+              </code></div>
+              <p>Now log in as your_user_name. This manipulation allows you to have superuser privileges when you want to
+                by typing <code>sudo</code> before any command, but you won't have any superuser privilege if you omit it.
+                This way of setting up user privileges is generally good practice to avoid doing any accidental damage to
+                the system following an unfortunate command.
+              </p>
+              <p>And finally, we need to setup a firewall.</p>
+              <div class="code-block"><code>
+                ufw enable
+              </code></div>
+              <ul><li>openssl</li></ul>
+            </div>
 
             <h2> 2. Create a webdav server using the HTTP protocol</h2>
-            <p>
-              Follow this first but instead of using 000-default.conf we use our own virtualhost
-              https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-14-04
+            <div class="ms-4">
+              <p>This section is based on step 2 of
+                <a class="a-no-underline" target="_blank"
+                   href="https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-14-04#step-two-%E2%80%94-setting-up-webdav">
+                  this tutorial
+                </a>
+                for creating the webdav server and step 5 of
+                <a class="a-no-underline" target="_blank"
+                   href="https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04#step-5-%E2%80%94-setting-up-virtual-hosts-recommended">
+                  that tutorial
+                </a>
+                for creating the virtual host.
+                A virtual host is essentially a configuration profile for the webdav server that is specific to
+                a user-defined set of directories. This allows us to create different websites with different
+                configurations on the same machine (Raspberry Pi).
+              </p>
+              <p>First, we will need to install
+                <a class="a-no-underline" target="_blank"
+                   href="https://ubuntu.com/server/docs/web-servers-apache">apache2
+                </a>,
+                which is the most common package to create webdav servers on linux systems.
+              </p>
+              <div class="code-block"><code>
+                sudo apt-get update<br>
+                sudo apt-get install apache2
+              </code></div>
+              <p>
+                Follow this first but instead of using 000-default.conf we use our own virtualhost
+                https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-14-04
 
-              The virtual host is done according to step 5 of this
-              https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04#step-5-%E2%80%94-setting-up-virtual-hosts-recommended
+                The virtual host is done according to step 5 of this
+                https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04#step-5-%E2%80%94-setting-up-virtual-hosts-recommended
 
-              the difference with the step 5 is that we use "webdav" as our domain to name /var/www/domain, we name the .conf file "webdav.conf" and put this in it:
-            </p>
-            <pre><code>
+                the difference with the step 5 is that we use "webdav" as our domain to name /var/www/domain, we name the .conf file "webdav.conf" and put this in it:
+              </p>
+              <pre><code>
     DavLockDB /var/www/DavLock
     &lt;VirtualHost *:80&gt;
         ServerAdmin your_email_here
@@ -52,23 +92,24 @@
     &lt;/VirtualHost&gt;
 
     # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
-            </code></pre>
+              </code></pre>
 
 
-            <p>
-              We also keep everything in www under www-data ownership
-              And we don’t do this
-              sudo chmod -R 755 /var/www/your_domain
+              <p>
+                We also keep everything in www under www-data ownership
+                And we don’t do this
+                sudo chmod -R 755 /var/www/your_domain
 
-              Then we enable (a2ensite) the DAV and the webdav.conf
-              And we disable the 000-default.conf
-              We can then check syntax. If we get the ServerName error we can ignore. If we want to fix it we can see here
-              https://www.digitalocean.com/community/tutorials/apache-configuration-error-ah00558-could-not-reliably-determine-the-server-s-fully-qualified-domain-name
-              Set the port forwarding to 80
-              After restarting apache, we should be able to access the server online at
-              	http://your_public_ip/webdav/
-              We can then move on to making a https protocol
-            </p>
+                Then we enable (a2ensite) the DAV and the webdav.conf
+                And we disable the 000-default.conf
+                We can then check syntax. If we get the ServerName error we can ignore. If we want to fix it we can see here
+                https://www.digitalocean.com/community/tutorials/apache-configuration-error-ah00558-could-not-reliably-determine-the-server-s-fully-qualified-domain-name
+                Set the port forwarding to 80
+                After restarting apache, we should be able to access the server online at
+                	http://your_public_ip/webdav/
+                We can then move on to making a https protocol
+              </p>
+            </div>
 
             <h2> 3. Create a webdav server using the HTTPS protocol</h2>
 
