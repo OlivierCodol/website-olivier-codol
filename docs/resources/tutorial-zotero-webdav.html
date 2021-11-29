@@ -87,6 +87,7 @@ https://templatemo.com/tm-560-astro-motion
             <p>TODO some intro here to explain the motivation</p>
 
             <h2> 1. Setup the Raspberry Pi</h2>
+            <div class="ms-4">
             <p>I won’t go into much detail about this as there are many comprehensive tutorials out there that already cover this.</p>
 
             <h4>Hardware</h4>
@@ -104,6 +105,7 @@ https://templatemo.com/tm-560-astro-motion
             <p>
               Next, we will need to setup and configure Apache on the Pi, which is a software that allows creating web servers.
             </p>
+          </div>
 
             <h2> 2. Create a webdav server using the HTTP protocol</h2>
             <p>
@@ -212,13 +214,13 @@ https://templatemo.com/tm-560-astro-motion
             </p>
             <code>/var/www/html/.well-known/pki-validation/your_txt_file.txt</code>
             <p class="mt-3">Let’s first make the folders</p>
-            <code>
+            <div class="code-block"><code>
               sudo mkdir /var/www/html/.well-known<br>
               sudo mkdir /var/www/html/.well-known/pki-validation<br>
               # just to ensure they are there<br>
               sudo mkdir /etc/ssl/certs/<br>
               sudo mkdir /etc/ssl/private/<br>
-            </code>
+            </code></div>
             <p class="mt-3">
               Now there are two ways to proceed tp obtain a SSL certificate, manually or create an automatic renewal.
               The manual approach is not recommended because the certificates expire after a while, specifically a year
