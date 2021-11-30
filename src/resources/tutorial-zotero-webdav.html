@@ -4,42 +4,42 @@
             <p>This is a first draft. Hopefully this will be finished off in the coming week. -- OC, 2021-11-29</p>
             <p>TODO some intro here to explain the motivation</p>
 
-            <h2> 1. Setup the Raspberry Pi</h2>
+            <h2 class="mt-5 mb-4"> 1. Setup the Raspberry Pi</h2>
             <div class="ms-4">
               <p>I won’t go into much detail about this as there are many comprehensive tutorials out there that already cover this.</p>
 
-              <h4>Hardware</h4>
+              <h4 class="mt-5 mb-3 ms-5">Hardware</h4>
               <p>At first you will obviously need a screen, keyboard and mouse plugged into the Pi. Then, you can connect to your network (ethernet or wifi) and set up some remote-control software, such as VNC Viewer or SSH to control the Pi directly through a remote terminal. At this point you can essentially leave the Pi as such with just the power supply plugged, and the ethernet cable if you chose that method over wifi.</p>
 
-              <h4>Basic Software</h4>
+              <h4 class="mt-5 mb-3 ms-5">Basic Software</h4>
               <p>Let's properly setup the Raspberry Pi OS first. This section is based on
                 <a class="a-no-underline" target="_blank" href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04">
                 this tutorial</a>, except we do not touch on setting up the SSH protocol. But feel free to look into it as well if you want to of course.
               </p>
               <p>Let's first update the system to its latest version. In a terminal, enter the following:</p>
-              <div class="code-block"><code>
-                sudo apt-get update<br>
-                sudo apt-get dist-upgrade<br>
-                sudo apt-get autoremove
-              </code></div>
+              <div class="code-block"><code><ul>
+                <li>sudo apt-get update</li>
+                <li>sudo apt-get dist-upgrade</li>
+                <li>sudo apt-get autoremove</li>
+              </ul></code></div>
               <p>Next, we will setup a regular user profile, and then grant that profile superuser privileges.</p>
-              <div class="code-block"><code>
-                adduser your_user_name<br>
-                usermod -aG sudo your_user_name
-              </code></div>
+              <div class="code-block"><code><ul>
+                <li>adduser your_user_name</li>
+                <li>usermod -aG sudo your_user_name</li>
+              </ul></code></div>
               <p>Now log in as your_user_name. This manipulation allows you to have superuser privileges when you want to
                 by typing <code>sudo</code> before any command, but you won't have any superuser privilege if you omit it.
                 This way of setting up user privileges is generally good practice to avoid doing any accidental damage to
                 the system following an unfortunate command.
               </p>
               <p>And finally, we need to setup a firewall.</p>
-              <div class="code-block"><code>
-                ufw enable
-              </code></div>
+              <div class="code-block"><code><ul>
+                <li>ufw enable</li>
+              </ul></code></div>
               <ul><li>openssl</li></ul>
             </div>
 
-            <h2> 2. Create a webdav server using the HTTP protocol</h2>
+            <h2 class="mt-5 mb-4"> 2. Create a webdav server using the HTTP protocol</h2>
             <div class="ms-4">
               <p>This section is based on step 2 of
                 <a class="a-no-underline" target="_blank"
@@ -62,222 +62,410 @@
                 </a>,
                 which is the most common package to create webdav servers on linux systems.
               </p>
-              <div class="code-block"><code>
-                sudo apt-get update<br>
-                sudo apt-get install apache2
-              </code></div>
+              <div class="code-block"><code><ul>
+                <li>sudo apt-get update</li>
+                <li>sudo apt-get install apache2</li>
+              </ul></code></div>
               <p>
-                Follow this first but instead of using 000-default.conf we use our own virtualhost
-                https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-14-04
+                Next we create the directory in which the webdav server will live, and give ownership of that directory
+                to the apache user so that it is allowed to manage it.
+              </p>
+              <div class="code-block"><code><ul>
+                <li>sudo mkdir /var/www/webdav</li>
+                <li>sudo chown -R www-data:www-data /var/www/</li>
+              </ul></code></div>
+              <p>And we activate the <code>a2enmod</code> shell script and use it to activate the webdav modules.</p>
+              <div class="code-block"><code><ul>
+                <li>enable a2enmod</li>
+                <li>sudo a2enmod dav</li>
+                <li>sudo a2enmod dav_fs</li>
+              </ul></code></div>
+              <p>
+                Next, we need to create a configuration file for our server. In Apache, configuration files are stored
+                in <code>/etc/apache2/sites-available/</code>. Several files can be stored there depending on how many
+                websites your machine hosts. The default configuration file is <code>000-default.conf</code>.
+              </p>
+              <p>
+                Let's create our own configuration file, called <code>webdav.conf</code>. To edit files in Linux, I use
+                nano, but feel free to use whatever editor you prefer. If you're unsure, nano is usually a solid choice as
+                it is simpler to use.
+              </p>
+              <div class="code-block"><code><ul>
+                <li>sudo nano /etc/apache2/sites-available/webdav.conf</li>
+              </ul></code></div>
+              <p>
+                In this file, copy and paste the content below.
+              </p>
+              <div class="accordion">
+                <div class="accordion-item">
+                  <h2 class="accordion-header bg-gradient">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#conffileHTTP">
+                      <code>/etc/apache2/zites-available/webdav.conf</code>
+                    </button>
+                  </h2>
+                  <div id="conffileHTTP" class="accordion-collapse show">
+                    <div class="accordion-body bg-transparent">
+                      <pre><code>
+DavLockDB /var/www/DavLock
+&lt;VirtualHost *:80&gt;
+    ServerAdmin your_email_here
+    DocumentRoot /var/www/html
 
-                The virtual host is done according to step 5 of this
-                https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04#step-5-%E2%80%94-setting-up-virtual-hosts-recommended
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-                the difference with the step 5 is that we use "webdav" as our domain to name /var/www/domain, we name the .conf file "webdav.conf" and put this in it:
+    Alias /webdav /var/www/webdav
+
+    &lt;Directory /var/www/webdav&gt;
+        DAV On
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+                      </code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p>
+                To save and close the file, press <code>CTRL + X</code>, then <code>y</code> for "yes", and finally press
+                "enter".
+              </p>
+              <p>
+                You can find details about what each line in the configuration file means
+                <a class="a-no-underline" target="_blank"
+                   href="https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-14-04#step-two-%E2%80%94-setting-up-webdav">
+                  here
+                </a>.
+                Essentially, we are indicating that the website is on port 80 of the router (usual port for HTTP protocol), and
+                pointing out the root location of the website on the system, which means when you call your public IP on a browser,
+                the server will display <code>/var/www/html/index.html</code>. The <code>Alias</code> line means that
+                when you call <code>http://your_public_ip/webdav</code>, the server will display <code>/var/www/webdav</code>.
+                The <code>DAV On</code> line simply toggles the WebDAV service on for the assigned directory, so <code>/var/www/webdav</code>
+                will behave like a webdav folder rather than a normal website.
+              </p>
+              <p>Next, we disable the default configuration file and enable our webdav configuration file</p>
+              <div class="code-block"><code><ul>
+                <li>sudo a2dissite 000-default.conf</li>
+                <li>sudo a2ensite webdav.conf</li>
+              </ul></code></div>
+              <p>We can test that the configuration file has been set up properly using a built-in tool from the apache2 package</p>
+              <div class="code-block"><code><ul>
+                <li>sudo apache2ctl configtest</li>
+              </ul></code></div>
+              <p>
+                If everything is set up properly we should get a <code>Syntax OK</code> output. You may also see this
+                error: <code>AH00558: Could not reliably determine the server's fully qualified domain name</code>.
+                This should not be a problem for what we are trying to do, but you can see
+                <a class="a-no-underline" target="_blank"
+                   href="https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04#step-6-%E2%80%93-getting-familiar-with-important-apache-files-and-directories">
+                  here
+                </a>
+                for how to fix it if you want to.
+              </p>
+              <p>
+                Finally, set a port-forwarding rule in your router to link the port 80 to your Raspberry Pi's private
+                IP address. Open your favorite browser, type in <code>192.168.0.1</code> and login to your router. If you
+                are not sure how to do it, this usually depends on the internet service provider who provided the internet
+                box of your house. Find out the brand and check on your ISP's website what is the default login.
+
+                Navigate to the port-forwarding tab of your router interface and create a new rule:
+              </p>
+              <ul>
+                <li><strong>Common Application:</strong> -SERVICES-</li>
+                <li><strong>Application Name:</strong> whatever_you_want</li>
+                <li><strong>Protocol:</strong> TCP</li>
+                <li><strong>Public Port Range:</strong> 80-80</li>
+                <li><strong>Private Port Range:</strong> 80-80</li>
+                <li><strong>Local IP Address:</strong>
+                  The local IP address of your Raspberry Pi. You can retrieve it by entering <code>
+                  hostname -I | awk '{print $1}'</code> in your machine's terminal</li>
+                <li><strong>
+                  Remote IP Address:</strong>
+                  "Any", or if you plan to connect only from a defined set of IP locations you can
+                  specify those to increase security.</li>
+                <li><strong>Rule Status:</strong> ON</li>
+              </ul>
+              <p>Restart apache:</p>
+              <div class="code-block"><code><ul>
+                <li>sudo systemctl restart apache2</li>
+              </ul></code></div>
+              <p>You should now be able to access the server online at <code>http://your_public_ip/webdav/</code></p>
+            </div>
+
+            <h2 class="mt-5 mb-4"> 3. Create a webdav server using the HTTPS protocol</h2>
+            <div class="ms-4">
+              <h4 class="mt-5 mb-3 ms-5">Configure the firewall</h4>
+              <p>
+                As indicated above, depending on your version of apache, your firewall could list the apache-related
+                applications as "WWW" or "Apache". To check this out, type <code>sudo ufw app list</code> in a terminal to
+                see if the list contains <code>WWW</code>, <code>WWW Full</code> and <code>WWW Secure</code>, or
+                <code>Apache</code>, <code>Apache Full</code> and <code>Apache Secure</code>. From here onward, I will
+                assume that your firewall uses <code>WWW</code> but please swap <code>WWW</code> for <code>Apache</code>
+                if you need to.
+              </p>
+              <p>
+                Let's change the firewall rules to allow for both HTTP and HTTPS communication, and disable the rule for
+                HTTP-only communication.
+              </p>
+              <div class="code-block"><code><ul>
+                  <li>sudo ufw allow "WWW Full"</li>
+                  <li>sudo ufw disable allow "WWW"</li>
+              </ul></code></div>
+              <p>Next we enable apache's <code>mod_ssl</code> module and restart apache to apply the changes.</p>
+               <div class="code-block"><code><ul>
+                  <li>sudo a2enmod ssl</li>
+                  <li>sudo systemctl restart apache2</li>
+              </ul></code></div>
+
+              <h4 class="mt-5 mb-3 ms-5">Edit the configuration file</h4>
+              <p>We then edit our <code>webdav.conf</code> file, so its content looks like this eventually</p>
+
+              <div class="accordion">
+                <div class="accordion-item">
+                  <h2 class="accordion-header bg-gradient">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#conffileHTTPS">
+                      <code>/etc/apache2/zites-available/webdav.conf</code>
+                    </button>
+                  </h2>
+                  <div id="conffileHTTPS" class="accordion-collapse show">
+                    <div class="accordion-body bg-transparent">
+                      <pre><code>
+DavLockDB /var/www/DavLock
+&lt;VirtualHost *:443&gt;
+    ServerAdmin codol.olivier@gmail.com
+    ServerName your_public_ip
+    DocumentRoot /var/www/html
+
+    SSLCertificateFile /etc/ssl/zotero_webdav.crt
+    SSLCertificateKeyFile /etc/ssl/zotero_webdav.key
+    SSLCertificateChainFile /etc/ssl/zotero_webdav_ca_bundle.crt
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    Alias /webdav /var/www/webdav
+
+    &lt;Directory /var/www/webdav&gt;
+        DAV On
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+                      </code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p>As a reminder, the terminal command for that purpose (if you use the nano editor) is:</p>
+               <div class="code-block"><code><ul>
+                  <li>sudo nano /etc/apache2/zites-available/webdav.conf</li>
+              </ul></code></div>
+              <p>
+                Note that on the second line, the virtual host is now 443 and not 80 anymore. Finally, we check that the
+                syntax is correct and restart the apache server to apply the changes.
+              </p>
+              <div class="code-block"><code><ul>
+                <li>sudo apache2ctl configtest</li>
+                <li>sudo systemctl restart apache2</li>
+              </ul></code></div>
+
+
+              <h4 class="mt-5 mb-3 ms-5">Set up the port forwarding rule</h4>
+              <p>
+                We must now add a new port forwarding rule on the router for port 443. It's the exact same thing as when
+                we set up the rule for the HTTP protocol above, except that we replace all the 80-80 port ranges with
+                443-443. Do keep the port 80 rule on as well, it will be useful for when we enable HTTP-to-HTTPS transfer
+                below.
+              </p>
+              <h4 class="mt-5 mb-3 ms-5">Get a SSL certificate for the webdav server</h4>
+              <p>
+                Now we need a SSL certificate for the HTTPS protocol to actually work properly. See the introduction of
+                <a class="a-no-underline" target="_blank"
+                   href="https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-18-04">
+                   this tutorial
+                </a>
+                for an explanation of what a SSL certificate is and why we need one.
+              </p>
+              <p>
+                While we could get a self-signed certificate, Zotero does not accept self-signed certificates unless they
+                are whitelisted, they don't have a GUI for whitelisting, and their suggested method for whitelisting does
+                not work all the time. Zotero is a great piece of software for reference-management, I promise. So we must
+                get a proper SSL certificate from a Certificate Authority (CA), which is a third-party certificate provider.
+              </p>
+              <p>
+                Now, we want a CA that provides free SSL certificates for bare IP addresses, which is actually
+                fairly rare.
+                <a class="a-no-underline" target="_blank"
+                   href="https://zerossl.com/">
+                   ZeroSSL
+                </a>
+                is the only free CA I am aware of that accepts bare IP addresses. If you know of any other, do let me know,
+                though so far I've been pretty happy with ZeroSSL. The only downside is that they provide only 3 certificate
+                at a given time. For the purpose of this tutorial I am going to assume you go with ZeroSSL.
+              </p>
+              <p>
+                First, create an account there (free). Now, for ZeroSSL to provide a SSL certificate, you have to prove
+                you own the website your request a certificate for. If you don’t want to do it using a DNS (because they're
+                usually not free), they ask you to put a <code>.txt</code> file on your website at
+                <code>your_public_ip/.well-known/pki-validation/validation_txt_file.txt</code>.
+                Since our "DocumentRoot" in webdav.conf is set to
+                <code>/var/www/html</code> on <code>webdav.conf</code>, this means we need to put the <code>.txt</code> file at
+                <code>/var/www/html/.well-known/pki-validation/your_txt_file.txt</code>. Let’s first make the folders
+                for this.
+              </p>
+              <div class="code-block"><code><ul>
+                <li>sudo mkdir /var/www/html/.well-known</li>
+                <li>sudo mkdir /var/www/html/.well-known/pki-validation</li>
+                <li># just to ensure they are there</li>
+                <li>sudo mkdir /etc/ssl/certs/</li>
+                <li>sudo mkdir /etc/ssl/private/</li>
+              </ul></code></div>
+              <p>
+                Now there are two ways to proceed to obtain a SSL certificate: manually or automatic renewal.
+                The manual approach is not recommended because the certificates expire after a while, specifically a year
+                or 90 days depending on what you chose when you request it.
+                So you’re better off setting an automatic renewal to avoid redoing this every time your certificate expires.
+                The reason the certificates are set to expire is the same reason as why we should change our password regularly,
+                to ensure a more secure encryption over time.
+                Consequently, 90-days certificate are better than 1-year certificates, which is great because they’re also
+                the ones that Certificate Authorities (CAs) usually issue for free. Now, I will detail both methods,
+                not just for the sake of completeness but because the manual process is just a good way to know what the
+                automatic process really does, even if it is automatic.
+              </p>
+
+              <div class="accordion">
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#manualSSL">
+                      Manually request a SSL certificate
+                    </button>
+                  </h2>
+                  <div id="manualSSL" class="accordion-collapse collapse">
+                    <div class="accordion-body bg-transparent">
+                      <p>
+                        First, when you request a certificate (
+                        <a class="a-no-underline" target="_blank"
+                           href="https://app.zerossl.com/certificate/new">
+                           link here
+                        </a>),
+                        indicate your server's public IP address as the domain, select a 90-day duration, chose "auto-generate CSR"
+                        and move on to the next step. To verify your domain (help
+                        <a class="a-no-underline" target="_blank"
+                           href="https://help.zerossl.com/hc/en-us/articles/360058295354-Verify-Domains">
+                          here
+                        </a>), chose the "HTTP File Upload" method. Download the
+                        <code>.txt</code> validation file and put that file into
+                        <code>/var/www/html/.well-known/pki-validation/your_txt_file.txt</code> and on the ZeroSSL website, click
+                        "Next Step". You should then be able to download your certificate as a <code>.zip</code> file.
+                      </p>
+                      <p>
+                        To install the certificate (
+                        <a class="a-no-underline" target="_blank"
+                           href="https://help.zerossl.com/hc/en-us/articles/360058295854">
+                           source tutorial here
+                        </a>),
+                        we put <code>certificate.crt</code>, <code>private.key</code> and <code>ca_bundle.crt</code> in the
+                        <code>/etc/ssl/certs/</code>, <code>/etc/ssl/private/</code> and <code>/etc/ssl/</code> directory,
+                        respectively, and rename them to match the .conf file. Assuming the files are in <code>~/Downloads</code>:
+                      </p>
+                      <div class="code-block"><code><ul>
+                        <li>sudo cp ~/Downloads/certificate.crt /etc/ssl/certs/zotero_webdav.crt</li>
+                        <li>sudo cp ~/Downloads/private.key /etc/ssl/private/zotero_webdav.key</li>
+                        <li>sudo cp ~/Downloads/ca_bundle.crt/etc/ssl/private/zotero_webdav_ca_bundle.crt</li>
+                      </ul></code></div>
+                      <p>At this point you should be able to access your server online using the HTTPS protocol:
+                        <code>https://your_ip_here</code>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#autoSSL">
+                      Automatically request a SSL certificate
+                    </button>
+                  </h2>
+                  <div id="autoSSL" class="accordion-collapse collapse">
+                    <div class="accordion-body bg-transparent">
+                      <p>
+                        What I mean by "automatically" is that we will use a script to request the SSL certificate and make this
+                        script run automatically upon its expiration.
+
+                        There are a lot of APIs that allows to do exactly that with no more than a couple command lines.
+                        Now here is the problem: most of them rely on either the ACME (link) or Certbot (link) packages, which are
+                        used not only by ZeroSSL, but also other CAs (notably "Let’s Encrypt" LINK). These other CAs do NOT
+                        provide certificates for bare IP addresses the way ZeroSSL does. So we cannot use them to ask for a new
+                        certificate each time. The solution is to use the raw API provided directly by ZeroSSL (link), write a
+                        shell script that handles everything for us, and finally automate the call of that script using a CRON job
+                        on the server. And here the magic of the internet comes into full swing: someone had that exact problem
+                        and shared the shell script for that purpose
+                        (https://blog.thestateofme.com/2021/04/02/zerossl-api-the-missing-examples/) (https://gist.github.com/cpswan/a955ab86d6e469029edc65c362ce72dd)
+                        Obviously this isn’t <em>exactly</em> what we want, but it’s pretty damn close.
+                      </p>
+                      <p>
+                        Here you can download an amended version that will fit the purpose of our server.
+                        <strong>Please change the ZeroSSL key and your domain in the script for it to work at all.</strong>
+                          (link to show where to find the key). To get the account key you should create an account with ZeroSSL
+                        Please put them in a place where you have write access (I put mine in ~/Documents/renew-ssl/).
+                        We’ll also need some dependencies
+                      </p>
+                      <code>sudo apt-get install openssl python3 jq curl</code>
+                      <p class="mt-3">Then run the script using the path you chose</p>
+                      <code>sh /your/path/to/renew-ssl.sh</code>
+                      <p class="mt-3">For instance for my chosen path it would be like this</p>
+                      <code>sh ~/Documents/renew-ssl/renew-ssl.sh</code>
+                      <p class="mt-3">If the script goes without errors, you should have your website SSL-certified now. Congrats!</p>
+                      <p>
+                        Now let’s set up a CRON job to make this automatic.
+
+                        #write out current crontab
+                        cd ~/Documents
+                        sudo crontab -l > mycron
+
+                        #echo new cron into cron file
+                        echo "01 00 * * * test $(( `date +\%s`/86400%90 )) = 0 && sudo sh /your/path/to/renew-ssl.sh" >> mycron
+
+                        #install new cron file
+                        sudo crontab mycron
+                        rm mycron
+
+                        Done!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            <h4 class="mt-5 mb-3 ms-5">HTTP => HTTPS transfer</h4>
+              <p>
+                Now to be able to access the website at https with the http address, add this at the bottom of webdav.conf (before the last line):
               </p>
               <pre><code>
-    DavLockDB /var/www/DavLock
-    &lt;VirtualHost *:80&gt;
-        ServerAdmin your_email_here
-        DocumentRoot /var/www/html
-
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-        Alias /webdav /var/www/webdav
-
-        &lt;Directory /var/www/webdav&gt;
-            DAV On
-        &lt;/Directory&gt;
-    &lt;/VirtualHost&gt;
-
-    # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+      &lt;VirtualHost *:80&gt;
+          ServerName your_public_ip
+          Redirect / https://your_public_ip/
+      &lt;/VirtualHost&gt;
               </code></pre>
-
-
               <p>
-                We also keep everything in www under www-data ownership
-                And we don’t do this
-                sudo chmod -R 755 /var/www/your_domain
+                Then run in a terminal
+                sudo apachectl configtest
+                sudo systemctl reload apache2
 
-                Then we enable (a2ensite) the DAV and the webdav.conf
-                And we disable the 000-default.conf
-                We can then check syntax. If we get the ServerName error we can ignore. If we want to fix it we can see here
-                https://www.digitalocean.com/community/tutorials/apache-configuration-error-ah00558-could-not-reliably-determine-the-server-s-fully-qualified-domain-name
-                Set the port forwarding to 80
-                After restarting apache, we should be able to access the server online at
-                	http://your_public_ip/webdav/
-                We can then move on to making a https protocol
+                Then you can test this online by connecting to your website with either http or https
               </p>
             </div>
 
-            <h2> 3. Create a webdav server using the HTTPS protocol</h2>
-
-            <h4>Configure the firewall</h4>
-            <p>
-              sudo ufw allow "Apache Full"
-              sudo ufw delete allow "Apache"
-
-              or
-              sudo ufw allow "WWW Full"
-              sudo ufw disable allow "WWW"
-
-              enable a2enmod
-              sudo a2enmod ssl
-              sudo systemctl restart apache2
-            </p>
-
-            <h4>Edit the configuration file</h4>
-            <p>and edit our webdav.conf file, so our file looks like this eventually</p>
-            <pre><code>
-    DavLockDB /var/www/DavLock
-    &lt;VirtualHost *:443&gt;
-        ServerAdmin codol.olivier@gmail.com
-        ServerName your_public_ip
-        DocumentRoot /var/www/html
-
-        SSLCertificateFile /etc/ssl/zotero_webdav.crt
-        SSLCertificateKeyFile /etc/ssl/zotero_webdav.key
-        SSLCertificateChainFile /etc/ssl/zotero_webdav_ca_bundle.crt
-
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-        Alias /webdav /var/www/webdav
-
-        &lt;Directory /var/www/webdav&gt;
-            DAV On
-        &lt;/Directory&gt;
-    &lt;/VirtualHost&gt;
-
-    # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
-            </code></pre>
-            <p>
-              Note that on the second line, the virtual host is now 443 and not 80 anymore.
-              Check syntax
-              Reload apache2
-            </p>
-
-            <h4>Set up the port forwarding rule</h4>
-            <p>
-              Add a new port forwarding on your router for 443. Keep the 80 port for http re-routing later on (step 5)
-              Now we need a SSL certificate for the HTTPS to actually work properly.
-            </p>
-            <h4>Get a SSL certificate for the webdav server</h4>
-            <p>
-              Get a SSL certificate from a Certificate Authority (CA), which is a third-party certificate provider. ZeroSSL is the only free CA I am aware of that accepts bare IP addresses:
-              https://zerossl.com/
-              You have to prove you own your website, and if you don’t want to do it using a DNS, they ask you to put a .txt file on your website at
-              your_public_ip/.well-known/pki-validation/your_txt_file_here.txt
-              since our DocumentRoot is set to <code>/var/www/html</code> on <code>webdav.conf</code>, this means we need to put the <code>.txt</code> file at:
-            </p>
-            <code>/var/www/html/.well-known/pki-validation/your_txt_file.txt</code>
-            <p class="mt-3">Let’s first make the folders</p>
-            <div class="code-block"><code>
-              sudo mkdir /var/www/html/.well-known<br>
-              sudo mkdir /var/www/html/.well-known/pki-validation<br>
-              # just to ensure they are there<br>
-              sudo mkdir /etc/ssl/certs/<br>
-              sudo mkdir /etc/ssl/private/<br>
-            </code></div>
-            <p class="mt-3">
-              Now there are two ways to proceed tp obtain a SSL certificate, manually or create an automatic renewal.
-              The manual approach is not recommended because the certificates expire after a while, specifically a year
-              or 90 days depending on what you chose when you request it.
-              So you’re better off setting an automatic renewal to avoid redoing this every time your certificate expires.
-              The reason the certificates are set to expire is the same reason as why we should change our password regularly,
-              to ensure a more secure encryption over time.
-              Consequently, 90-days certificate are better than 1-year certificates, which is great because they’re also
-              the ones that Certificate Authorities (CAs) usually issue for free.
-            </p>
-
-            <h5>Manually request a SSL certificate</h5>
-            <p>
-              sudo cp ~/Downloads/your_txt_file.txt /var/www/html/.well-known/pki-validation/your_txt_file.txt
-
-              Then you can download your certificate.
-              https://help.zerossl.com/hc/en-us/articles/360058295854
-
-              To install the certificate (source tutorial here), we put certificate.crt, private.key and ca_bundle.crt into my /etc/ssl/certs/, /etc/ssl/private/ and /etc/ssl/ directory, respectively, and rename them to match the .conf file:
-
-
-              sudo cp ~/Downloads/certificate.crt /etc/ssl/certs/zotero_webdav.crt
-              sudo cp ~/Downloads /private.key /etc/ssl/private/zotero_webdav.key
-              sudo cp ~/Downloads/ca_bundle.crt/etc/ssl/private/zotero_webdav_ca_bundle.crt
-
-              At this point you should be able to access your server online using the https protocol:
-              https://your_ip_here
-            </p>
-
-            <h5>Automatically request a SSL certificate</h5>
-            <p>
-              What I mean by "automatically" is that we will use a script to request the SSL certificate and make this
-              script run automatically upon its expiration.
-
-              There are a lot of APIs that allows to do exactly that with no more than a couple command lines.
-              Now here is the problem: most of them rely on either the ACME (link) or Certbot (link) packages, which are
-              used not only by ZeroSSL, but also other CAs (notably "Let’s Encrypt" LINK). These other CAs do NOT
-              provide certificates for bare IP addresses the way ZeroSSL does. So we cannot use them to ask for a new
-              certificate each time. The solution is to use the raw API provided directly by ZeroSSL (link), write a
-              shell script that handles everything for us, and finally automate the call of that script using a CRON job
-              on the server. And here the magic of the internet comes into full swing: someone had that exact problem
-              and shared the shell script for that purpose
-              (https://blog.thestateofme.com/2021/04/02/zerossl-api-the-missing-examples/) (https://gist.github.com/cpswan/a955ab86d6e469029edc65c362ce72dd)
-              Obviously this isn’t <em>exactly</em> what we want, but it’s pretty damn close.
-            </p>
-            <p>
-              Here you can download an amended version that will fit the purpose of our server.
-              <strong>Please change the ZeroSSL key and your domain in the script for it to work at all.</strong>
-                (link to show where to find the key). To get the account key you should create an account with ZeroSSL
-              Please put them in a place where you have write access (I put mine in ~/Documents/renew-ssl/).
-              We’ll also need some dependencies
-            </p>
-            <code>sudo apt-get install openssl python3 jq curl</code>
-            <p class="mt-3">Then run the script using the path you chose</p>
-            <code>sh /your/path/to/renew-ssl.sh</code>
-            <p class="mt-3">For instance for my chosen path it would be like this</p>
-            <code>sh ~/Documents/renew-ssl/renew-ssl.sh</code>
-            <p class="mt-3">If the script goes without errors, you should have your website SSL-certified now. Congrats!</p>
-            <p>
-              Now let’s set up a CRON job to make this automatic.
-
-              #write out current crontab
-              cd ~/Documents
-              sudo crontab -l > mycron
-
-              #echo new cron into cron file
-              echo "01 00 * * * test $(( `date +\%s`/86400%90 )) = 0 && sudo sh /your/path/to/renew-ssl.sh" >> mycron
-
-              #install new cron file
-              sudo crontab mycron
-              rm mycron
-
-              Done!
-            </p>
-
-            <h4>HTTP => HTTPS transfer</h4>
-            <p>
-              Now to be able to access the website at https with the http address, add this at the bottom of webdav.conf (before the last line):
-            </p>
-            <pre><code>
-    &lt;VirtualHost *:80&gt;
-        ServerName your_public_ip
-        Redirect / https://your_public_ip/
-    &lt;/VirtualHost&gt;
-            </code></pre>
-            <p>
-              Then run in a terminal
-              sudo apachectl configtest
-              sudo systemctl reload apache2
-
-              Then you can test this online by connecting to your website with either http or https
-            </p>
-
-            <h4>Adding authentication</h4>
-            <p>
-              Do step 3 of this tutorial
-              https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-14-04
-            </p>
+            <h2  class="mt-5 mb-4">4. Adding authentication</h2>
+            <div class="ms-4">
+              <p>
+                Do step 3 of this tutorial
+                https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-14-04
+              </p>
+            </div>
 
           </div>
         </div>
