@@ -401,10 +401,11 @@ h2 {
 
 .code-block {
     background-color: rgba(0, 0, 0, 0.15);
-    padding: 15px;
+    padding: 15px 15px 2px;
     border-radius: .40rem;
     margin-bottom: 10px;
 }
+
 pre {
     background-color: rgba(0, 0, 0, 0.15);
     padding: 15px;
@@ -415,6 +416,15 @@ code {
     color: #ff9f5a;
 }
 
+.code-block ul {
+    list-style: none;
+}
+
+.code-block li:before {
+    content: "$";
+    margin-right: 10px;
+    margin-left: -20px;
+}
 
 .content-pad {
     border-radius: .40rem 0.40rem 0 0;
