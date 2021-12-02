@@ -31,7 +31,7 @@
             <h4 class="mt-5 mb-5 ms-5">Basic Software</h4>
             <p>Let's properly setup the Raspberry Pi OS first. This section is based on
               <a class="a-no-underline" target="_blank" href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04">
-              this tutorial</a>, except we do not touch on setting up the SSH protocol. But feel free to look into it as well if you want to of course.
+              this tutorial</a>, except we do not touch on setting up the SSH protocol, but feel free to look into it as well if you want to.
             </p>
             <p>Let's first update the system to its latest version. In a terminal, enter the following:</p>
             <div class="code-block"><code><ul>
@@ -44,7 +44,7 @@
               <li>adduser your_user_name</li>
               <li>usermod -aG sudo your_user_name</li>
             </ul></code></div>
-            <p>Now log in as your_user_name. This manipulation allows you to have superuser privileges when you want to
+            <p>Now log in as <code>your_user_name</code>. This manipulation allows you to have superuser privileges when you want to
               by typing <code>sudo</code> before any command, but you won't have any superuser privilege if you omit it.
               This way of setting up user privileges is generally good practice to avoid doing any accidental damage to
               the system following an unfortunate command.
@@ -101,7 +101,7 @@
             </p>
             <p>
               Let's create our own configuration file, called <code>webdav.conf</code>. To edit files in Linux, I use
-              nano, but feel free to use whatever editor you prefer. If you're unsure, nano is usually a solid choice as
+              nano, but feel free to use whatever editor you prefer. If you're unsure, nano is usually a good choice as
               it is simpler to use.
             </p>
             <div class="code-block"><code><ul>
@@ -209,7 +209,7 @@ DavLockDB /var/www/DavLock
             <h2 class="mt-5 mb-5"> 3. Create a WebDAV server using the HTTPS protocol</h2>
             <h4 class="mt-5 mb-5 ms-5">Configure the firewall</h4>
             <p>
-              As indicated above, depending on your version of apache, your firewall could list the apache-related
+              Depending on your version of apache, your firewall could list the apache-related
               applications as "WWW" or "Apache". To check this out, type <code>sudo ufw app list</code> in a terminal to
               see if the list contains <code>WWW</code>, <code>WWW Full</code> and <code>WWW Secure</code>, or
               <code>Apache</code>, <code>Apache Full</code> and <code>Apache Secure</code>. From here onward, I will
@@ -270,7 +270,7 @@ DavLockDB /var/www/DavLock
             </div>
             <p>As a reminder, the terminal command for that purpose (if you use the nano editor) is:</p>
              <div class="code-block"><code><ul>
-                <li>sudo nano /etc/apache2/zites-available/webdav.conf</li>
+                <li>sudo nano /etc/apache2/sites-available/webdav.conf</li>
             </ul></code></div>
             <p>
               Note that on the second line, the virtual host is now 443 and not 80 anymore. Finally, we check that the
@@ -306,16 +306,17 @@ DavLockDB /var/www/DavLock
                  href="https://zerossl.com/">
                  ZeroSSL
               </a>)
-              require a subscription. So instead we're going to use a self-signed certificate. Those are usually not
+              eventually require a subscription. So instead we're going to use a self-signed certificate. Those are usually not
               trusted online because they essentially signal that the website has been "vetted" by the person who controls
-              the website rather than by an independent authority (the CA). This matters since most websites are not
-              visited by the website owner but by the general public, but for us this doesn't matter as the WebDAV
+              the website rather than by an independent authority (the CA). This usually matters because most websites are not
+              visited by the website owner but by the general public and so third-party confirmation allows to have an
+              independent confirmation that the website is secure. But for us this doesn't matter as the WebDAV
               server is for private use only.
             </p>
             <p>
-              Now certificates expire after a while, specifically a year or 90 days depending on what you chose when
+              Now certificates expire after a while, specifically 365 days or 90 days depending on what you chose when
               you request it. This is for the same reason as why we should change our password regularly, to ensure a more
-              secure encryption over time. Consequently, 90-days certificate tend to be better than 1-year
+              secure encryption over time. Consequently, 90-days certificate tend to be better than 365-days
               certificates.
             </p>
             <p>First, let's ensure the recipient directories for the certificate exist.</p>
@@ -346,8 +347,8 @@ DavLockDB /var/www/DavLock
             <p>
               Linux systems come with a package called CRON for automatically running commands and programs.
               This is what we're going to use here. The below example is set to renew the SSL certificate every 89 days
-              at 5:00 AM. That's one less than 90 days to avoid "off" time between certificates, since the CRON job is set
-              to run once a day. If you want to renew every 364 because you installed a 365-days SSL certificate,
+              at 5:00 AM. That's one less than 90 days to avoid "off" time between certificates.
+              If you want to renew every 364 because you installed a 365-days SSL certificate,
               replace <code>0 5 */89 * *</code> by <code>0 5 */364 * *</code> in the code snippet below. Also, don't
               forget to include the information such as Common Name, City, Country, etc in the <code>openssl</code>
               command.
@@ -365,7 +366,7 @@ DavLockDB /var/www/DavLock
               <li>sudo crontab mycron</li>
               <li>rm mycron</li>
             </ul></code></div>
-            <p>Done!</p>
+            <p>Your SSL certificate should now be installed.</p>
 
             <h4 class="mt-5 mb-5 ms-5">HTTP to HTTPS transfer</h4>
             <p>
