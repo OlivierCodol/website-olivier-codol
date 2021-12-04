@@ -23,12 +23,12 @@
               for private use.
             </p>
 
-            <h2 class="mt-5 mb-5"> 1. Setup the Raspberry Pi</h2>
+            <h2 class="fw-bolder mt-5 mb-5"> 1. Setup the Raspberry Pi</h2>
 
-            <h4 class="mt-5 mb-5 ms-5">Hardware</h4>
+            <h4 class="fw-bolder mt-5 mb-5 ms-5">Hardware</h4>
             <p>At first you will obviously need a screen, keyboard and mouse plugged into the Pi. Then, you can connect to your network (ethernet or wifi) and set up some remote-control software, such as VNC Viewer or SSH to control the Pi directly through a remote terminal. At this point you can essentially leave the Pi as such with just the power supply plugged, and the ethernet cable if you chose that method over wifi.</p>
 
-            <h4 class="mt-5 mb-5 ms-5">Basic Software</h4>
+            <h4 class="fw-bolder mt-5 mb-5 ms-5">Basic Software</h4>
             <p>Let's properly setup the Raspberry Pi OS first. This section is based on
               <a class="a-no-underline" target="_blank" href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04">
               this tutorial</a>, except we do not touch on setting up the SSH protocol, but feel free to look into it as well if you want to.
@@ -54,7 +54,7 @@
               <li>ufw enable</li>
             </ul></code></div>
 
-            <h2 class="mt-5 mb-5"> 2. Create a WebDAV server using the HTTP protocol</h2>
+            <h2 class="fw-bolder mt-5 mb-5"> 2. Create a WebDAV server using the HTTP protocol</h2>
             <p>This section is based on step 2 of
               <a class="a-no-underline" target="_blank"
                  href="https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-14-04#step-two-%E2%80%94-setting-up-webdav">
@@ -149,8 +149,7 @@ DavLockDB /var/www/DavLock
               You can find details about what each line in the configuration file means
               <a class="a-no-underline" target="_blank"
                  href="https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-14-04#step-two-%E2%80%94-setting-up-webdav">
-                here
-              </a>.
+                here</a>.
               Essentially, we are indicating that the website is on port 80 of the router (usual port for HTTP protocol), and
               pointing out the root location of the website on the system, which means when you call your public IP on a browser,
               the server will display <code>/var/www/html/index.html</code>. The <code>Alias</code> line means that
@@ -206,8 +205,8 @@ DavLockDB /var/www/DavLock
             </ul></code></div>
             <p>You should now be able to access the server online at <code>http://your_ip_here/webdav/</code></p>
 
-            <h2 class="mt-5 mb-5"> 3. Create a WebDAV server using the HTTPS protocol</h2>
-            <h4 class="mt-5 mb-5 ms-5">Configure the firewall</h4>
+            <h2 class="fw-bolder mt-5 mb-5"> 3. Create a WebDAV server using the HTTPS protocol</h2>
+            <h4 class="fw-bolder mt-5 mb-5 ms-5">Configure the firewall</h4>
             <p>
               Depending on your version of apache, your firewall could list the apache-related
               applications as "WWW" or "Apache". To check this out, type <code>sudo ufw app list</code> in a terminal to
@@ -230,7 +229,7 @@ DavLockDB /var/www/DavLock
                 <li>sudo systemctl restart apache2</li>
             </ul></code></div>
 
-            <h4 class="mt-5 mb-5 ms-5">Edit the configuration file</h4>
+            <h4 class="fw-bolder mt-5 mb-5 ms-5">Edit the configuration file</h4>
             <p>We then edit our <code>webdav.conf</code> file, so its content looks like this eventually</p>
 
             <div class="accordion">
@@ -282,7 +281,7 @@ DavLockDB /var/www/DavLock
             </ul></code></div>
 
 
-            <h4 class="mt-5 mb-35ms-5">Set up the port forwarding rule</h4>
+            <h4 class="fw-bolder mt-5 mb-35ms-5">Set up the port forwarding rule</h4>
             <p>
               We must now add a new port forwarding rule on the router for port 443. It's the exact same thing as when
               we set up the rule for the HTTP protocol above, except that we replace all the 80-80 port ranges with
@@ -290,7 +289,7 @@ DavLockDB /var/www/DavLock
               below.
             </p>
 
-            <h4 class="mt-5 mb-5 ms-5">Get a SSL certificate for the WebDAV server</h4>
+            <h4 class="fw-bolder mt-5 mb-5 ms-5">Get a SSL certificate for the WebDAV server</h4>
             <p>
               Now we need a SSL certificate for the HTTPS protocol to actually work properly. See the introduction of
               <a class="a-no-underline" target="_blank"
@@ -304,8 +303,7 @@ DavLockDB /var/www/DavLock
               with CAs is that they don't all provide certificates for bare IP addresses, and those that do (e.g.
               <a class="a-no-underline" target="_blank"
                  href="https://zerossl.com/">
-                 ZeroSSL
-              </a>)
+                 ZeroSSL</a>)
               eventually require a subscription. So instead we're going to use a self-signed certificate. Those are usually not
               trusted online because they essentially signal that the website has been "vetted" by the person who controls
               the website rather than by an independent authority (the CA). This usually matters because most websites are not
@@ -343,7 +341,7 @@ DavLockDB /var/www/DavLock
               to the browser's whitelist.
             </p>
 
-            <h4 class="mt-5 mb-5 ms-5">Automatic renewal of the SSL certificate</h4>
+            <h4 class="fw-bolder mt-5 mb-5 ms-5">Automatic renewal of the SSL certificate</h4>
             <p>
               Linux systems come with a package called CRON for automatically running commands and programs.
               This is what we're going to use here. The below example is set to renew the SSL certificate every 89 days
@@ -368,7 +366,7 @@ DavLockDB /var/www/DavLock
             </ul></code></div>
             <p>Your SSL certificate should now be installed.</p>
 
-            <h4 class="mt-5 mb-5 ms-5">HTTP to HTTPS transfer</h4>
+            <h4 class="fw-bolder mt-5 mb-5 ms-5">HTTP to HTTPS transfer</h4>
             <p>
               Now to be able to access the website at <code>https://</code> with the <code>http</code> address, add
               this at the bottom of <code>webdav.conf</code> (before the last line):
@@ -389,7 +387,7 @@ DavLockDB /var/www/DavLock
               <code>https</code> prefix.
             </p>
 
-            <h2 class="mt-5 mb-5">4. Adding authentication</h2>
+            <h2 class="fw-bolder mt-5 mb-5">4. Adding authentication</h2>
             <p>
               Just follow step 3 of
               <a class="a-no-underline" target="_blank"
@@ -454,9 +452,9 @@ DavLockDB /var/www/DavLock
             </ul></code></div>
 
 
-            <h2 class="mt-5 mb-5"> 5. Setup Zotero</h2>
+            <h2 class="fw-bolder mt-5 mb-5"> 5. Setup Zotero</h2>
 
-            <h4 class="mt-5 mb-5 ms-5">Configuring the settings</h4>
+            <h4 class="fw-bolder mt-5 mb-5 ms-5">Configuring the settings</h4>
             <p>
               On the machine that runs Zotero (your laptop, workstation, etc.), open Zotero, and go to
               <code>Edit >> Preferences >> Sync</code>. On the "File Syncing" section, put these options:
@@ -464,7 +462,7 @@ DavLockDB /var/www/DavLock
             <img class="mb-5 mt-3" style="width: 100%; max-width: 512px" alt="zotero-settings" src="resources/zotero_webdav.png">
             <p>Your username and password will be those defined in step 4. above.</p>
 
-            <h4 class="mt-5 mb-5 ms-5">Whitelisting the self-signed SSL certificate</h4>
+            <h4 class="fw-bolder mt-5 mb-5 ms-5">Whitelisting the self-signed SSL certificate</h4>
             <p>
               Zotero will not accept self-signed SSL certificates unless they are whitelisted, a process for which they do
               not yet have a GUI for, unfortunately. Here is the
