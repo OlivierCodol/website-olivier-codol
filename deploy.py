@@ -141,7 +141,10 @@ for source_file in files:
     source_new = source_new.replace(href_flag, href_flag + relative_path)
     source_new = source_new.replace("""hr__ef="http""", href_flag + "http")  # restore http hrefs
     source_new = source_new.replace(src_flag, src_flag + relative_path)
-    footer_new = footer.replace(src_flag, src_flag + relative_path)
+
+    footer_new = footer.replace(src_flag + "http", """sr__c="http""")
+    footer_new = footer_new.replace(src_flag, src_flag + relative_path)
+    footer_new = footer_new.replace("""sr__c="http""", src_flag + "http")
 
     # add blogpost header if page is a blog post
     if file[:file.find("\\")] == "blogposts":
